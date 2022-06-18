@@ -4,6 +4,7 @@ import 'package:movie/blocs/movie_bloc.dart';
 import 'package:movie/customized_icons/icon_text.dart';
 import 'package:movie/helpers/api_helper.dart';
 import 'package:movie/icons/custom_icons.py.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class MovieInfoTile extends StatelessWidget {
   const MovieInfoTile({Key? key}) : super(key: key);
@@ -28,24 +29,32 @@ class MovieInfoTile extends StatelessWidget {
 
           child: Stack(
             children: <Widget>[
-              const AspectRatio(aspectRatio: 2 / 3),
+              // A widget with the same size of the image, to wait the loading
+              const AspectRatio(
+                aspectRatio: 2 / 3,
+                child: Center(
+                  child: CircularProgressIndicator(color: Colors.white),
+                ),
+              ),
 
               StreamBuilder<Map<String, dynamic>>(
                 stream: BlocProvider.of<MovieBloc>(context).outInfo,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    return Image.network(
-                      ApiHelper.bannerSearchLink(
-                        snapshot.data!["poster_path"],
-                      ),
-                    );
+                    // Banner with fade-in animation
+                    return FadeInImage.memoryNetwork(
+                        placeholder: kTransparentImage,
+                        image: ApiHelper.bannerSearchLink(
+                            snapshot.data!["poster_path"],
+                        ),);
                   } else {
+                    // Empty widget
                     return const SizedBox.shrink();
                   }
                 },
               ),
 
-              // BackButton
+              // BackButton above the Banner
               const Positioned(
                 left: 20,
                 top: 65,
@@ -62,7 +71,6 @@ class MovieInfoTile extends StatelessWidget {
             ],
           ),
         ),
-
         Padding(
           padding: const EdgeInsets.only(left: 15),
           child: Row(
@@ -105,6 +113,8 @@ class MovieInfoTile extends StatelessWidget {
             ],
           ),
         ),
+
+        // Movie statistics
         Padding(
           padding: const EdgeInsets.only(left: 15, top: 8),
           child: Row(
