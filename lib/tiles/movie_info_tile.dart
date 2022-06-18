@@ -5,8 +5,8 @@ import 'package:movie/customized_icons/icon_text.dart';
 import 'package:movie/helpers/api_helper.dart';
 import 'package:movie/icons/custom_icons.py.dart';
 
-class MovieInfoTab extends StatelessWidget {
-  const MovieInfoTab({Key? key}) : super(key: key);
+class MovieInfoTile extends StatelessWidget {
+  const MovieInfoTile({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie/tabs/movie_info_tab.dart';
+import 'package:movie/tiles/movie_info_tile.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -13,7 +13,7 @@ class HomePage extends StatelessWidget {
         padding: EdgeInsets.zero,
         itemCount: 10,
         itemBuilder: (context, index) {
-          if (index == 0) return const MovieInfoTab();
+          if (index == 0) return const MovieInfoTile();
 
           return Container(
             margin: const EdgeInsets.symmetric(vertical: 10),
