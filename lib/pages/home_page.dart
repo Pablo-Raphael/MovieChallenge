@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie/blocs/movie_bloc.dart';
 import 'package:movie/tiles/movie_info_tile.dart';
-import 'package:movie/custom_widgets/similar_movie.dart';
+import 'package:movie/custom_widgets/similar%20movie/similar_movie.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -32,7 +32,9 @@ class _HomePageState extends State<HomePage> {
             // If the api has collected the data, the size of the ListView will\
             // be equal to the amount of data, otherwise the size will be 1
             itemCount: snap?.length != null ? snap.length + 1 : 1,
+
             padding: EdgeInsets.zero,
+
             itemBuilder: (context, index) {
               // The first position must be occupied by the movie information
               if (index == 0) return const MovieInfoTile();
@@ -43,6 +45,9 @@ class _HomePageState extends State<HomePage> {
                   id: snap[index - 1]["id"].toString(),
                   title: snap[index - 1]["title"],
                   posterPath: snap[index - 1]["poster_path"],
+                  genres: snap[index-1]["genre_ids"],
+                  avaliableGenres: snapshot.data!["genres"],
+                  date: snap[index-1]["release_date"]
                 );
               }
 

@@ -4,7 +4,15 @@ import 'package:transparent_image/transparent_image.dart';
 
 class FadeImage extends StatelessWidget {
   final String path;
-  const FadeImage(this.path, {Key? key}) : super(key: key);
+  final bool lowQuality;
+  final double? width;
+
+  const FadeImage(
+    this.path, {
+    Key? key,
+    this.width,
+    required this.lowQuality,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +32,9 @@ class FadeImage extends StatelessWidget {
 
       // Fade-in Effect
       child: FadeInImage.memoryNetwork(
+        width: width,
         placeholder: kTransparentImage,
-        image: ApiHelper.bannerSearchLink(path),
+        image: ApiHelper.bannerSearchLink(path, lowQuality: lowQuality),
       ),
     );
   }

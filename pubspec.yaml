@@ -84,6 +84,10 @@ flutter:
     - family: HeartIcons
       fonts:
         - asset: lib/icons/HeartIcons.ttf
+    - family: SecularOne
+      fonts:
+        - asset: assets/fonts/SecularOne-Regular.ttf
+
 
   # fonts:
   #   - family: Schyler

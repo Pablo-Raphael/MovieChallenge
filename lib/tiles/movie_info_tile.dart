@@ -33,7 +33,7 @@ class MovieInfoTile extends StatelessWidget {
 
                 // Banner Image loaded with BLoC
                 snapshot.hasData
-                    ? FadeImage(snap!["poster_path"])
+                    ? FadeImage(snap!["poster_path"], lowQuality: false)
                     : const SizedBox.shrink(),
 
                 // BackButton above the Banner
