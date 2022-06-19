@@ -33,5 +33,6 @@ class MovieBloc extends Bloc {
   dispose() {
     _searchController.close();
     _infoController.close();
+    _similarController.close();
   }
 }
