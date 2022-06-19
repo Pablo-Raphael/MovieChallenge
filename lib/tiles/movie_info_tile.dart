@@ -116,7 +116,7 @@ class MovieInfoTile extends StatelessWidget {
 
         // Movie statistics
         Padding(
-          padding: const EdgeInsets.only(left: 15, top: 8),
+          padding: const EdgeInsets.only(left: 15, top: 8, bottom: 35),
           child: Row(
             children: const <Widget>[
               IconText(icon: HeartIcons.heart, size: 15, text: "xxxxxxxx"),
