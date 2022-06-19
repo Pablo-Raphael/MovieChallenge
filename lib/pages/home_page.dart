@@ -47,11 +47,13 @@ class HomePage extends StatelessWidget {
                               lowQuality: true,
                             ),
                           ),
-                          Text(
+
+                          Expanded(child:Text(
                             snapshot.data!["results"][index - 1]["title"],
                             style: const TextStyle(
                                 color: Colors.white, fontSize: 16),
-                          )
+                          ) )
+
                         ],
                       ),
                     ),
