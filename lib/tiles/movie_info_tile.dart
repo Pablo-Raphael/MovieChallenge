@@ -43,10 +43,11 @@ class MovieInfoTile extends StatelessWidget {
                   if (snapshot.hasData) {
                     // Banner with fade-in animation
                     return FadeInImage.memoryNetwork(
-                        placeholder: kTransparentImage,
-                        image: ApiHelper.bannerSearchLink(
-                            snapshot.data!["poster_path"],
-                        ),);
+                      placeholder: kTransparentImage,
+                      image: ApiHelper.bannerSearchLink(
+                        snapshot.data!["poster_path"],
+                      ),
+                    );
                   } else {
                     // Empty widget
                     return const SizedBox.shrink();
@@ -116,15 +117,30 @@ class MovieInfoTile extends StatelessWidget {
 
         // Movie statistics
         Padding(
-          padding: const EdgeInsets.only(left: 15, top: 8, bottom: 35),
-          child: Row(
-            children: const <Widget>[
-              IconText(icon: HeartIcons.heart, size: 15, text: "xxxxxxxx"),
-              SizedBox(width: 25),
-              IconText(icon: Icons.star_half, size: 19, text: "xxxxxxxx"),
-            ],
-          ),
-        ),
+            padding: const EdgeInsets.only(left: 15, top: 8, bottom: 30),
+            child: StreamBuilder<Map<String, dynamic>>(
+                stream: BlocProvider.of<MovieBloc>(context).outInfo,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Row(
+                      children: <Widget>[
+                        IconText(
+                          icon: HeartIcons.heart,
+                          size: 15,
+                          text: "${snapshot.data!["vote_count"]} Likes",
+                        ),
+                        const SizedBox(width: 25),
+                        IconText(
+                          icon: Icons.star_half,
+                          size: 19,
+                          text: double.parse("${snapshot.data!["popularity"]}").toStringAsFixed(2)
+                        ),
+                      ],
+                    );
+                  } else {
+                    return const SizedBox.shrink();
+                  }
+                })),
       ],
     );
   }
