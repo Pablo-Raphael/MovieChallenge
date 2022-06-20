@@ -21,7 +21,7 @@ class MovieBloc extends Bloc {
   final _toggleFavoriteController = StreamController<String>.broadcast();
   Sink<String> get inToggleFav => _toggleFavoriteController.sink;
 
-  final _favoritesController = StreamController<List<String>>.broadcast();
+  final _favoritesController = BehaviorSubject<List<String>>();
   Stream<List<String>> get outFavList => _favoritesController.stream;
 
   Future<Map<int, String>> get getGenres async {
@@ -40,17 +40,26 @@ class MovieBloc extends Bloc {
   }
 
   MovieBloc() : super(null) {
-    inSearch.add("1771-captain-america-the-first-avenger");
     api = ApiHelper();
     favorites = SharedHelper();
+
     _searchController.stream.listen(_searchInfo);
     _toggleFavoriteController.stream.listen(_toggleFavorite);
+
+    inSearch.add("1771-captain-america-the-first-avenger");
+    _asyncConstructor();
+  }
+
+  void _asyncConstructor() async {
+    _favoritesController.sink.add(await favorites.getfavorites());
   }
 
   void _searchInfo(String id) async{
+    // Return movie info
     Map<String, dynamic> details = await api.getMovieDetails(id);
     _infoController.sink.add(details);
 
+    // Return similar movies with genres
     _similarController.sink.add({});
     Map<String, dynamic> similarMovies = await api.getSimilarMovies(id);
     similarMovies["genres"] = await getGenres;
@@ -63,6 +72,8 @@ class MovieBloc extends Bloc {
   }
 
   dispose() {
+    _toggleFavoriteController.close();
+    _favoritesController.close();
     _searchController.close();
     _infoController.close();
     _similarController.close();

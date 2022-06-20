@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie/blocs/movie_bloc.dart';
 import 'package:movie/custom_widgets/fadein_image.dart';
-import 'package:movie/custom_widgets/similar%20movie/similar_movie_text_details.dart';
-import 'package:movie/custom_widgets/similar%20movie/similar_movie_title.dart';
+import 'package:movie/custom_widgets/similar_movie/similar_movie_text_details.dart';
+import 'package:movie/custom_widgets/similar_movie/similar_movie_title.dart';
 import 'package:movie/icons/custom_icons.py.dart';
 
 class SimilarMovie extends StatelessWidget {
@@ -12,7 +12,6 @@ class SimilarMovie extends StatelessWidget {
   final String title;
   final List genres;
   final String date;
-  final List<String> favorites;
 
   final Map<int, String> avaliableGenres;
 
@@ -21,7 +20,6 @@ class SimilarMovie extends StatelessWidget {
     required this.id,
     required this.date,
     required this.title,
-    required this.favorites,
     required this.posterPath,
     required this.genres,
     required this.avaliableGenres,
@@ -66,9 +64,17 @@ class SimilarMovie extends StatelessWidget {
               ),
             ),
 
-            favorites.contains(id)
-                ? const Icon(HeartIcons.heart, size: 12, color: Colors.white)
-                : const SizedBox.shrink()
+            StreamBuilder<List<String>>(
+              stream: BlocProvider.of<MovieBloc>(context).outFavList,
+              builder: (context, favoriteList) {
+                if (favoriteList.hasData) {
+                  return favoriteList.data!.contains(id)
+                      ? const Icon(HeartIcons.heart, size: 12, color: Colors.white)
+                      : const SizedBox.shrink();
+                }
+                return const SizedBox.shrink();
+              },
+            ),
           ],
         ),
       ),

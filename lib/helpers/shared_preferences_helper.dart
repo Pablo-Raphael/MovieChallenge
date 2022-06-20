@@ -3,12 +3,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SharedHelper {
   SharedPreferences? prefs;
 
+  // access, initialize or create
   Future<SharedPreferences> get getPref async {
+    // acess
     if (prefs != null) {
       return prefs!;
     }
+    // initialize
     else {
       prefs = await SharedPreferences.getInstance();
+      // create
       if (!prefs!.containsKey("favorites")) {
         prefs!.setStringList("favorites", []);
       }
@@ -17,24 +21,23 @@ class SharedHelper {
   }
 
   Future<List<String>> getfavorites() async {
-    print("Entrou nos favoritos");
     SharedPreferences sharedPref = await getPref;
     return sharedPref.getStringList("favorites")!;
   }
 
   void toggleFavorite(String id) async {
-    print("entrou no SP");
     SharedPreferences sharedPref = await getPref;
+
     var fav = sharedPref.getStringList("favorites");
+
+    // add to favorites if not already
     if (fav!.contains(id)) {
-      print(fav);
       fav.remove(id);
-      print(fav);
       sharedPref.setStringList("favorites", fav);
-    } else{
-      print(fav);
+    }
+    // remove from favorites if it already exists
+    else {
       fav.add(id);
-      print(fav);
       sharedPref.setStringList("favorites", fav);
     }
   }

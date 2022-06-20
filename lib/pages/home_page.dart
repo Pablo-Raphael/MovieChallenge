@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie/blocs/movie_bloc.dart';
 import 'package:movie/tiles/movie_info_tile.dart';
-import 'package:movie/custom_widgets/similar%20movie/similar_movie.dart';
+import 'package:movie/custom_widgets/similar_movie/similar_movie.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -22,58 +22,40 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      body: StreamBuilder<Map<String, dynamic>>(
-        stream: BlocProvider.of<MovieBloc>(context).outSimilar,
-        builder: (context, snapshot) {
-          // simplified code for easy access
-          var snap = snapshot.data?["results"];
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const MovieInfoTile(),
 
-          // waits for the favorites list to load to show the details
-          return FutureBuilder<List<String>>(
-            future: BlocProvider.of<MovieBloc>(context).favorites.getfavorites(),
-            builder: (context, fav) {
-              if (fav.hasData) {
-                return ListView.builder(
-                  // If the api has collected the data, the size of the ListView will\
-                  // be equal to the amount of data, otherwise the size will be 1
-                  itemCount: snap?.length != null ? snap.length + 1 : 1,
+            StreamBuilder<Map<String, dynamic>>(
+              stream: BlocProvider.of<MovieBloc>(context).outSimilar,
+              builder: (context, snapshot) {
+                // simplified code for easy access
+                List? snap = snapshot.data?["results"];
 
-                  padding: EdgeInsets.zero,
+                // Similar movies will be shown when Bloc loads API data
+                if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                  return Column(
+                    children: snap!.map((value) {
+                        return SimilarMovie(
+                          id: value["id"].toString(),
+                          title: value["title"],
+                          posterPath: value["poster_path"],
+                          genres: value["genre_ids"],
+                          avaliableGenres: snapshot.data!["genres"],
+                          date: value["release_date"],
+                        );
+                      },
+                    ).toList(),
+                  );
+                }
 
-                  itemBuilder: (context, index) {
-                    // The first position must be occupied by the movie information
-                    if (index == 0) {
-                      return MovieInfoTile(favorites: fav.data!);
-                    }
-
-                    // Similar movies will be shown when Bloc loads API data
-                    if (snapshot.hasData) {
-                      return SimilarMovie(
-                        id: snap[index - 1]["id"].toString(),
-                        title: snap[index - 1]["title"],
-                        posterPath: snap[index - 1]["poster_path"],
-                        genres: snap[index - 1]["genre_ids"],
-                        avaliableGenres: snapshot.data!["genres"],
-                        date: snap[index - 1]["release_date"],
-                        favorites: fav.data!,
-                      );
-                    }
-
-                    // if Movie Details snapshot has no data
-                    else {
-                      return const SizedBox.shrink();
-                    }
-                  },
-                );
-              }
-
-              // if favorite snapshot has no data
-              else {
+                // if Movie Details snapshot has no data
                 return const SizedBox.shrink();
-              }
-            },
-          );
-        },
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

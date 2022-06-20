@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie/blocs/movie_bloc.dart';
 import 'package:movie/custom_widgets/fadein_image.dart';
+import 'package:movie/custom_widgets/favorite_button.dart';
 import 'package:movie/custom_widgets/icon_text.dart';
 import 'package:movie/custom_widgets/movie_title.dart';
 import 'package:movie/custom_widgets/shaded_icon_button.dart';
 import 'package:movie/icons/custom_icons.py.dart';
 
 class MovieInfoTile extends StatelessWidget {
-  final List<String> favorites;
-
-  const MovieInfoTile({Key? key, required this.favorites}) : super(key: key);
+  const MovieInfoTile({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -60,21 +59,15 @@ class MovieInfoTile extends StatelessWidget {
                     Flexible(
                       flex: 1,
                       child: StreamBuilder<List<String>>(
-                        initialData: favorites,
                         stream: BlocProvider.of<MovieBloc>(context).outFavList,
                         builder: (context, favoriteList) {
-                          return IconButton(
-                            icon: Icon(
-                              favoriteList.data!.contains("${snap["id"]}")
-                                  ? HeartIcons.heart
-                                  : HeartIcons.heart_empty,
-                              size: 24,
-                            ),
-                            color: Colors.white,
-                            onPressed: () {
-                              toggleFavorite(context, snap["id"]);
-                            }
-                          );
+                          if (favoriteList.hasData) {
+                            return FavoriteButton(
+                                id: snap["id"].toString(),
+                                favorites: favoriteList.data!,
+                            );
+                          }
+                          return const SizedBox.shrink();
                         },
                       ),
                     ),
@@ -100,25 +93,20 @@ class MovieInfoTile extends StatelessWidget {
                     IconText(
                       icon: Icons.star_half,
                       size: 19,
-                      text:
-                          "${double.parse("${snap["popularity"]}").toStringAsFixed(2)} Popularity",
+                      text: "${double.parse("${snap["popularity"]}").toStringAsFixed(2)} Popularity",
                     ),
                   ],
                 ),
               ),
             ],
           );
-        } else {
-          return const SizedBox.shrink();
         }
+        return const SizedBox.shrink();
       },
     );
   }
 }
 
-void toggleFavorite(BuildContext context, var id) {
-  BlocProvider.of<MovieBloc>(context).inToggleFav.add(id.toString());
-}
 
 // Turns 18754 number into 18.7k string
 String formatLikeNumber(String likes) {
