@@ -28,30 +28,46 @@ class _HomePageState extends State<HomePage> {
           // simplified code for easy access
           var snap = snapshot.data?["results"];
 
-          return ListView.builder(
-            // If the api has collected the data, the size of the ListView will\
-            // be equal to the amount of data, otherwise the size will be 1
-            itemCount: snap?.length != null ? snap.length + 1 : 1,
+          // waits for the favorites list to load to show the details
+          return FutureBuilder<List<String>>(
+            future: BlocProvider.of<MovieBloc>(context).favorites.getfavorites(),
+            builder: (context, fav) {
+              if (fav.hasData) {
+                return ListView.builder(
+                  // If the api has collected the data, the size of the ListView will\
+                  // be equal to the amount of data, otherwise the size will be 1
+                  itemCount: snap?.length != null ? snap.length + 1 : 1,
 
-            padding: EdgeInsets.zero,
+                  padding: EdgeInsets.zero,
 
-            itemBuilder: (context, index) {
-              // The first position must be occupied by the movie information
-              if (index == 0) return const MovieInfoTile();
+                  itemBuilder: (context, index) {
+                    // The first position must be occupied by the movie information
+                    if (index == 0) {
+                      return MovieInfoTile(favorites: fav.data!);
+                    }
 
-              // Similar movies will be shown when Bloc loads API data
-              if (snapshot.hasData) {
-                return SimilarMovie(
-                  id: snap[index - 1]["id"].toString(),
-                  title: snap[index - 1]["title"],
-                  posterPath: snap[index - 1]["poster_path"],
-                  genres: snap[index-1]["genre_ids"],
-                  avaliableGenres: snapshot.data!["genres"],
-                  date: snap[index-1]["release_date"]
+                    // Similar movies will be shown when Bloc loads API data
+                    if (snapshot.hasData) {
+                      return SimilarMovie(
+                        id: snap[index - 1]["id"].toString(),
+                        title: snap[index - 1]["title"],
+                        posterPath: snap[index - 1]["poster_path"],
+                        genres: snap[index - 1]["genre_ids"],
+                        avaliableGenres: snapshot.data!["genres"],
+                        date: snap[index - 1]["release_date"],
+                        favorites: fav.data!,
+                      );
+                    }
+
+                    // if Movie Details snapshot has no data
+                    else {
+                      return const SizedBox.shrink();
+                    }
+                  },
                 );
               }
 
-              // if snapshot has no data
+              // if favorite snapshot has no data
               else {
                 return const SizedBox.shrink();
               }

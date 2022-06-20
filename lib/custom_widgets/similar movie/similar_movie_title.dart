@@ -9,6 +9,7 @@ class SimilarMovieTitle extends StatelessWidget {
     return Text(
       title,
       overflow: TextOverflow.ellipsis,
+      maxLines: 2,
       style: const TextStyle(
         color: Color.fromRGBO(255, 255, 255, 0.9),
         fontSize: 17.5,

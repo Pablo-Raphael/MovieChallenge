@@ -4,6 +4,7 @@ import 'package:movie/blocs/movie_bloc.dart';
 import 'package:movie/custom_widgets/fadein_image.dart';
 import 'package:movie/custom_widgets/similar%20movie/similar_movie_text_details.dart';
 import 'package:movie/custom_widgets/similar%20movie/similar_movie_title.dart';
+import 'package:movie/icons/custom_icons.py.dart';
 
 class SimilarMovie extends StatelessWidget {
   final String id;
@@ -11,6 +12,8 @@ class SimilarMovie extends StatelessWidget {
   final String title;
   final List genres;
   final String date;
+  final List<String> favorites;
+
   final Map<int, String> avaliableGenres;
 
   const SimilarMovie({
@@ -18,6 +21,7 @@ class SimilarMovie extends StatelessWidget {
     required this.id,
     required this.date,
     required this.title,
+    required this.favorites,
     required this.posterPath,
     required this.genres,
     required this.avaliableGenres,
@@ -42,7 +46,10 @@ class SimilarMovie extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   // Title
-                  SimilarMovieTitle(title),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: SimilarMovieTitle(title),
+                  ),
 
                   // Widget to space
                   const SizedBox(height: 4),
@@ -57,7 +64,11 @@ class SimilarMovie extends StatelessWidget {
                   )
                 ],
               ),
-            )
+            ),
+
+            favorites.contains(id)
+                ? const Icon(HeartIcons.heart, size: 12, color: Colors.white)
+                : const SizedBox.shrink()
           ],
         ),
       ),
