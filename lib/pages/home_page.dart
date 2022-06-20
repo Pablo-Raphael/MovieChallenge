@@ -25,8 +25,10 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            // Movie banner and details
             const MovieInfoTile(),
 
+            // Similar movies
             StreamBuilder<Map<String, dynamic>>(
               stream: BlocProvider.of<MovieBloc>(context).outSimilar,
               builder: (context, snapshot) {
