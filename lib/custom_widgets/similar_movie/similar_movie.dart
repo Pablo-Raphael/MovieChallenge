@@ -30,7 +30,10 @@ class SimilarMovie extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
       child: InkWell(
-        onTap: () => BlocProvider.of<MovieBloc>(context).inSearch.add(id),
+        onTap: () {
+          BlocProvider.of<MovieBloc>(context).favorites.stackMovies.add(id);
+          BlocProvider.of<MovieBloc>(context).inSearch.add(id);
+        },
         child: Row(
           children: <Widget>[
             FadeImage(posterPath, width: 65, lowQuality: true),

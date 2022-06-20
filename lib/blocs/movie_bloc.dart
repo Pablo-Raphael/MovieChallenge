@@ -46,7 +46,7 @@ class MovieBloc extends Bloc {
     _searchController.stream.listen(_searchInfo);
     _toggleFavoriteController.stream.listen(_toggleFavorite);
 
-    inSearch.add("1771-captain-america-the-first-avenger");
+    inSearch.add(favorites.stackMovies.last);
     _asyncConstructor();
   }
 

@@ -2,6 +2,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedHelper {
   SharedPreferences? prefs;
+  // used by the back button to find the previous movie
+  List<String> stackMovies = ["1771-captain-america-the-first-avenger"];
 
   // access, initialize or create
   Future<SharedPreferences> get getPref async {
