@@ -86,6 +86,7 @@ class SimilarMovie extends StatelessWidget {
 }
 
 // transforms integer list of genres into a formatted string
+// [1, 2, 3, 4]  ->  "1, 2, 3, 4"
 String generateGenreText(List genres, Map<int, String> avaliableGenres) {
   String formatted = "";
   for (int genre in genres.take(2)) {
