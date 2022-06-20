@@ -9,7 +9,7 @@
 #### Apesar de o desafio ter pedido apenas uma réplica estática, optei por, além de concluir os pontos do desafio, inserir algumas outras funçôes que tornam o aplicativo _totalmente funcional_☑️:
 - O usuário pode navegar para __qualquer filme__ da lista de sugestões, já que os filmes similares exibidos abaixo do filme em destaque são clicáveis.
 - O botão de like é persistente, não importa quantas vezes o app seja reiniciado, a escolha do usuário será guardada. 💾
-- Como é possível navegar entres filmes e os likes são persistentes para qualquer filme, caso hajam filmes favoritados na lista de sugestão, um símbolo de coração será mostrado ao lado do filme sugerido. ♥
+- Como é possível navegar entres filmes e os likes são persistentes para qualquer filme, caso haja filmes favoritados na lista de sugestão, um símbolo de coração será mostrado ao lado do filme sugerido. ♥
 - O botão de voltar, que fica sobre o banner do filme, também é funcional, caso o usuário esteja navegando entre filmes, esse botão permite voltar para o filme anterior.
 - O aplicativo possui um ícone próprio, não o padrão do Flutter.
 - Banners de filmes ao serem carregados surgem com um efeito de Fade-In.
